@@ -1,5 +1,6 @@
 import "./App.css";
 import Cart from "./customer/components/Cart/Cart.jsx";
+import Checkout from "./customer/components/Checkout/Checkout.jsx";
 import Navigation from "./customer/components/Navigation/Navigation.jsx";
 import HomePage from "./customer/pages/HomPage/HomePage.jsx";
 import Footer from "./customer/components/Footer/Footer.jsx";
@@ -15,7 +16,8 @@ function App() {
 					{/* <HomePage /> */}
 					{/* <Product /> */}
 					{/* <ProductDetails /> */}
-					<Cart />
+					{/* <Cart /> */}
+					<Checkout />
 					<Footer />
 				</div>
 			</BrowserRouter >
