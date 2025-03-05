@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Icon } from "@mui/material";
+import { Grid } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 import { useNavigate } from "react-router-dom";
 

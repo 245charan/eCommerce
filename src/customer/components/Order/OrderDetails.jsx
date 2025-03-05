@@ -26,6 +26,7 @@ const OrderDetails = () => {
 							<img
 								className='w-[5rem] h-[5rem] object-cover object-top'
 								src='https://tailwindui.com/plus-assets/img/ecommerce-images/product-page-02-secondary-product-shot.jpg'
+								alt=""
 							/>
 
 							<div className='space-y-2 ml-5'>
