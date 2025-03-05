@@ -1,5 +1,4 @@
-"use client";
-
+/* eslint-disable no-restricted-globals */
 import { Fragment, useState } from "react";
 import {
 	Dialog,
@@ -14,10 +13,12 @@ import {
 	TabList,
 	TabPanel,
 	TabPanels,
+	Transition,
 } from "@headlessui/react";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const navigation = {
 	categories: [
@@ -146,6 +147,7 @@ const navigation = {
 
 export default function Navigation() {
 	const [open, setOpen] = useState(false);
+	const navigate = useNavigate();
 	const [openAuthModal, setOpenAuthModal] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const openUserMenu = Boolean(anchorEl);
@@ -167,9 +169,14 @@ export default function Navigation() {
 		setOpenAuthModal(false);
 	};
 
-	// const handleCategoryClick = (category, section, item, close) => {
-	// 	close();
-	// };
+	const handleCategoryClick = (category, section, item, close) => {
+		console.log("category", category);
+		console.log("section", section);
+		console.log("item", item);
+		console.log("close", close);
+		navigate(`/${category.id}/${section.id}/${item.name}`);
+		close();
+	};
 
 	return (
 		<div className='bg-white z-90'>
@@ -335,73 +342,90 @@ export default function Navigation() {
 													{category.name}
 												</PopoverButton>
 											</div>
+											<Transition
+												as={Fragment}
+												enter='transition ease-out duration-200'
+												enterFrom='opacity-0'
+												enterTo='opacity-100'
+												leave='transition ease-in duration-150'
+												leaveFrom='opacity-100'
+												leaveTo='opacity-0'>
+												<PopoverPanel
+													transition
+													className='absolute inset-x-0 top-full text-sm text-gray-500 transition data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in'>
+													{/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+													<div
+														aria-hidden='true'
+														className='absolute inset-0 top-1/2 bg-white shadow-sm'
+													/>
 
-											<PopoverPanel
-												transition
-												className='absolute inset-x-0 top-full text-sm text-gray-500 transition data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in'>
-												{/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-												<div
-													aria-hidden='true'
-													className='absolute inset-0 top-1/2 bg-white shadow-sm'
-												/>
-
-												<div className='relative bg-white'>
-													<div className='mx-auto max-w-7xl px-8'>
-														<div className='grid grid-cols-2 gap-x-8 gap-y-10 py-16'>
-															<div className='col-start-2 grid grid-cols-2 gap-x-8'>
-																{category.featured.map((item) => (
-																	<div
-																		key={item.name}
-																		className='group relative text-base sm:text-sm'>
-																		<img
-																			alt={item.imageAlt}
-																			src={item.imageSrc}
-																			className='aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75'
-																		/>
-																		<a
-																			href={item.href}
-																			className='mt-6 block font-medium text-gray-900'>
-																			<span
-																				aria-hidden='true'
-																				className='absolute inset-0 z-10'
+													<div className='relative bg-white'>
+														<div className='mx-auto max-w-7xl px-8'>
+															<div className='grid grid-cols-2 gap-x-8 gap-y-10 py-16'>
+																<div className='col-start-2 grid grid-cols-2 gap-x-8'>
+																	{category.featured.map((item) => (
+																		<div
+																			key={item.name}
+																			className='group relative text-base sm:text-sm'>
+																			<img
+																				alt={item.imageAlt}
+																				src={item.imageSrc}
+																				className='aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75'
 																			/>
-																			{item.name}
-																		</a>
-																		<p aria-hidden='true' className='mt-1'>
-																			Shop now
-																		</p>
-																	</div>
-																))}
-															</div>
-															<div className='row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm'>
-																{category.sections.map((section) => (
-																	<div key={section.name}>
-																		<p
-																			id={`${section.name}-heading`}
-																			className='font-medium text-gray-900'>
-																			{section.name}
-																		</p>
-																		<ul
-																			role='list'
-																			aria-labelledby={`${section.name}-heading`}
-																			className='mt-6 space-y-6 sm:mt-4 sm:space-y-4'>
-																			{section.items.map((item) => (
-																				<li key={item.name} className='flex'>
-																					<a
-																						href={item.href}
-																						className='hover:text-gray-800'>
-																						{item.name}
-																					</a>
-																				</li>
-																			))}
-																		</ul>
-																	</div>
-																))}
+																			<a
+																				href={item.href}
+																				className='mt-6 block font-medium text-gray-900'>
+																				<span
+																					aria-hidden='true'
+																					className='absolute inset-0 z-10'
+																				/>
+																				{item.name}
+																			</a>
+																			<p aria-hidden='true' className='mt-1'>
+																				Shop now
+																			</p>
+																		</div>
+																	))}
+																</div>
+																<div className='row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm'>
+																	{category.sections.map((section) => (
+																		<div key={section.name}>
+																			<p
+																				id={`${section.name}-heading`}
+																				className='font-medium text-gray-900'>
+																				{section.name}
+																			</p>
+																			<ul
+																				role='list'
+																				aria-labelledby={`${section.name}-heading`}
+																				className='mt-6 space-y-6 sm:mt-4 sm:space-y-4'>
+																				{section.items.map((item) => (
+																					<li
+																						key={item.name}
+																						className='flex'>
+																						<p
+																							onClick={() =>
+																								handleCategoryClick(
+																									category,
+																									section,
+																									item,
+																									close
+																								)
+																							}
+																							className='cursor-pointer hover:text-gray-800'>
+																							{item.name}
+																						</p>
+																					</li>
+																				))}
+																			</ul>
+																		</div>
+																	))}
+																</div>
 															</div>
 														</div>
 													</div>
-												</div>
-											</PopoverPanel>
+												</PopoverPanel>
+											</Transition>
 										</Popover>
 									))}
 
@@ -442,7 +466,9 @@ export default function Navigation() {
 													"aria-labelledby": "basic-button",
 												}}>
 												<MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-												<MenuItem>My Orders</MenuItem>
+												<MenuItem onClick={() => navigate("/account/order")}>
+													My Orders
+												</MenuItem>
 												<MenuItem>Logout</MenuItem>
 											</Menu>
 										</div>
